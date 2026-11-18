@@ -35,7 +35,7 @@ export function Hero() {
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-black text-white">
       <p
         aria-hidden={true}
-        className="display pointer-events-none absolute inset-x-0 top-[4.25rem] select-none whitespace-nowrap text-center text-[23vw] leading-none text-white/[0.07]"
+        className="display pointer-events-none absolute inset-x-0 max-md:hidden top-[4.25rem] select-none whitespace-nowrap text-center text-[23vw] leading-none text-white/[0.07]"
       >
         Akarachi
       </p>

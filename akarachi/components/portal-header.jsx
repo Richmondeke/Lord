@@ -46,7 +46,7 @@ export default function PortalHeader() {
             href="/"
             className="ml-auto inline-flex items-center gap-1 font-semibold hover:underline"
           >
-            {"akarachi.org "}
+            {"aaklegacy.org "}
             <ArrowUpRight size={14} aria-hidden={true} />
           </Link>
         </div>

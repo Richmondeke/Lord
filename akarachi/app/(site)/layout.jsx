@@ -12,20 +12,13 @@ export default function Layout({ children }) {
       <footer className="bg-ink text-white/80">
         <div className="wrap grid gap-12 py-16 md:grid-cols-[1.5fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-4">
-              <Image
-                src="/brand/symbol-on-dark.svg"
-                alt=""
-                width={56}
-                height={64}
-                className="h-16 w-auto"
-              />
-              <p className="display text-4xl text-white">
-                Akarachi
-                <br />
-                Etinosa Amadi
-              </p>
-            </div>
+            <Image
+              src="/brand/logo-primary-on-dark.svg"
+              alt="AAK Legacy Foundation. Rooted in Community, United in Impact."
+              width={280}
+              height={201}
+              className="h-auto w-[15rem]"
+            />
             <p className="mt-6 max-w-sm text-[0.9375rem]">
               Member, House of Representatives, Mbaitoli/Ikeduru Federal
               Constituency. Constituency office: KM 4, Owerri-Okigwe Road, Imo
@@ -34,6 +27,18 @@ export default function Layout({ children }) {
             <a href="mailto:info@akarachi.org" className="go mt-4 text-white">
               <span className="go-under">info@akarachi.org</span>
             </a>
+            <p className="mt-6 max-w-sm text-[0.9375rem]">
+              Founded by Hon. Engr. Akarachi Amadi.{" "}
+              <a
+                href="https://akarachi.org"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 font-semibold text-white underline underline-offset-4 hover:no-underline"
+              >
+                Visit his official site, akarachi.org
+                <ArrowUpRightIcon size={14} aria-hidden={true} />
+              </a>
+            </p>
           </div>
           <div>
             <p className="ui text-2xl text-white">This site</p>

@@ -71,13 +71,11 @@ export async function POST(req) {
   }[kind];
   if (!column) return json({ error: "Unknown kind." }, 400);
   const fallback = { learned: [], checkins: [] }[kind] ?? null;
-  const { error } = await sb
-    .from("portal_state")
-    .upsert({
-      user_id: user.id,
-      [column]: value ?? fallback,
-      updated_at: new Date().toISOString(),
-    });
+  const { error } = await sb.from("portal_state").upsert({
+    user_id: user.id,
+    [column]: value ?? fallback,
+    updated_at: new Date().toISOString(),
+  });
   if (error) return json({ error: error.message }, 400);
   return json({ ok: true });
 }

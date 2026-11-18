@@ -74,19 +74,31 @@ export default function SiteHeader() {
             href="/"
             onClick={() => b(false)}
             className="flex items-center gap-3"
-            aria-label="Akarachi Amadi, home"
+            aria-label="AAK Legacy Foundation, home"
           >
+            {/* Small tree on phones and on crowded widths; the horizontal logo where it fits. */}
             <Image
-              src="/brand/symbol-on-dark.svg"
+              src={
+                w ? "/brand/symbol-on-light.svg" : "/brand/symbol-on-dark.svg"
+              }
               alt=""
               width={40}
               height={46}
-              className="h-[2.875rem] w-auto"
+              className="h-[2.875rem] w-auto sm:hidden lg:block xl:hidden"
               priority={true}
             />
-            <span className="ui hidden text-[1.375rem] font-bold sm:block xl:hidden 2xl:block">
-              Akarachi Amadi
-            </span>
+            <Image
+              src={
+                w
+                  ? "/brand/wordmark-on-light.svg"
+                  : "/brand/wordmark-on-dark.svg"
+              }
+              alt=""
+              width={153}
+              height={53}
+              className="hidden h-[3.3rem] w-auto sm:block lg:hidden xl:block"
+              priority={true}
+            />
           </Link>
           <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
             {m.map((e) => (
@@ -170,6 +182,15 @@ export default function SiteHeader() {
               </li>
             ))}
           </ul>
+          <a
+            href="https://akarachi.org"
+            target="_blank"
+            rel="noreferrer"
+            className="ui wrap flex items-center gap-2 pb-2 text-2xl text-white/85 hover:text-white"
+          >
+            Hon. Akarachi Amadi, official site{" "}
+            <ArrowUpRight size={20} aria-hidden={true} />
+          </a>
           <Link
             href="/portal"
             onClick={() => b(false)}

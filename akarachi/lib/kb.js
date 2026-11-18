@@ -270,7 +270,7 @@ export const answers = [
       "talk",
     ],
     answer:
-      "The constituency office is at KM 4, Owerri-Okigwe Road, Imo State. Write to info@akarachi.org.",
+      "The constituency office is at KM 4, Owerri-Okigwe Road, Imo State. Write to info@aaklegacy.org.",
     link: {
       href: "/#contact",
       label: "Contact the office",
@@ -375,7 +375,7 @@ export const suggestions = [
 ];
 
 export const NO_ANSWER =
-  "I don't have that in what the office has published. I can answer questions about Akarachi Amadi, his bills, the work in Mbaitoli and Ikeduru, and how to apply for a programme. For anything else, write to info@akarachi.org.";
+  "I don't have that in what the office has published. I can answer questions about Akarachi Amadi, his bills, the work in Mbaitoli and Ikeduru, and how to apply for a programme. For anything else, write to info@aaklegacy.org.";
 
 /** Keyword match against the published answers. */
 export function matchAnswer(question) {

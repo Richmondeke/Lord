@@ -29,8 +29,8 @@ export default function Layout({ children }) {
                 Constituency. Constituency office: KM 4, Owerri-Okigwe Road, Imo
                 State.
               </p>
-              <a href="mailto:info@akarachi.org" className="go mt-4 text-white">
-                <span className="go-under">info@akarachi.org</span>
+              <a href="mailto:info@aaklegacy.org" className="go mt-4 text-white">
+                <span className="go-under">info@aaklegacy.org</span>
               </a>
               <p className="mt-6 max-w-sm text-[0.9375rem]">
                 Founded by Hon. Engr. Akarachi Amadi.{" "}
@@ -78,7 +78,7 @@ export default function Layout({ children }) {
                 </li>
                 <li>
                   <Link href="/" className="hover:underline">
-                    Back to akarachi.org
+                    Back to aaklegacy.org
                   </Link>
                 </li>
               </ul>

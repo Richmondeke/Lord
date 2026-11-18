@@ -157,7 +157,7 @@ export default function BeneficiarySearch() {
                 <p className="mt-1 text-white/85">
                   Try the spelling used when you registered, or the order
                   surname then first name. If you believe you were awarded and
-                  are not listed, write to info@akarachi.org.
+                  are not listed, write to info@aaklegacy.org.
                 </p>
               </div>
             )}
@@ -210,7 +210,7 @@ export default function BeneficiarySearch() {
                   </div>
                 </dl>
                 <p className="mt-3 border-t border-line pt-3 text-sm text-slate">
-                  Not you, or a detail is wrong? Write to info@akarachi.org with
+                  Not you, or a detail is wrong? Write to info@aaklegacy.org with
                   your name and community.
                 </p>
               </motion.div>
@@ -272,7 +272,7 @@ export default function BeneficiarySearch() {
                 thousand people, many of them students. Anyone can confirm an
                 award by name, but nobody can download the list or see a phone
                 number. If you want your record corrected or removed, write to
-                info@akarachi.org.
+                info@aaklegacy.org.
               </p>
               <Link href="/portal/apply" className="link mt-3 inline-block">
                 Not on a register yet? Apply for a programme

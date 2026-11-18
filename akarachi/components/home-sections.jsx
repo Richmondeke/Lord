@@ -91,7 +91,7 @@ export function Contact() {
       message: "",
     }),
     i = e.name.trim().length > 1 && e.message.trim().length > 9,
-    l = `mailto:info@akarachi.org?subject=${encodeURIComponent(e.subject || `Message from ${e.name}`)}&body=${encodeURIComponent(`${e.message}
+    l = `mailto:info@aaklegacy.org?subject=${encodeURIComponent(e.subject || `Message from ${e.name}`)}&body=${encodeURIComponent(`${e.message}
 
 ${e.name}`)}`;
   return (
@@ -156,7 +156,7 @@ ${e.name}`)}`;
         <ArrowUpRight size={20} aria-hidden={true} />
       </button>
       <p className="text-sm text-slate">
-        This opens a draft to info@akarachi.org in your own email app. Nothing
+        This opens a draft to info@aaklegacy.org in your own email app. Nothing
         is sent from this page.
       </p>
     </form>

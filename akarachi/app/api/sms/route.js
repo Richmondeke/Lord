@@ -2,9 +2,9 @@ import { json, localPhone, readToken, sendSms } from "@/lib/server";
 
 const TEMPLATES = {
   welcome: () =>
-    "Welcome to the Akarachi Empowerment Portal. Choose a programme and apply at akarachi.org/portal. Applying is free.",
+    "Welcome to the Akarachi Empowerment Portal. Choose a programme and apply at aaklegacy.org/portal. Applying is free.",
   submitted: ({ ref, programme }) =>
-    `We have your ${programme || "programme"} application, reference ${ref}. Track it at akarachi.org/portal/status. Nobody should ask you to pay.`,
+    `We have your ${programme || "programme"} application, reference ${ref}. Track it at aaklegacy.org/portal/status. Nobody should ask you to pay.`,
   mentor: () =>
     "Your mentor request is in. You will be matched when your application is approved.",
 };

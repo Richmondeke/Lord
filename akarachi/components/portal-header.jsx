@@ -54,11 +54,11 @@ export default function PortalHeader() {
       <div className="wrap flex h-[4.5rem] items-stretch justify-between">
         <Link href="/portal" className="flex items-center gap-3">
           <Image
-            src="/img/logo.webp"
+            src="/brand/symbol-on-light.svg"
             alt=""
-            width={44}
+            width={38}
             height={44}
-            className="h-11 w-11 rounded-full"
+            className="h-11 w-auto"
             priority={true}
           />
           <span className="ui text-[1.5rem] font-bold leading-none">

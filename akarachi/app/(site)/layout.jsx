@@ -14,11 +14,11 @@ export default function Layout({ children }) {
           <div>
             <div className="flex items-center gap-4">
               <Image
-                src="/img/logo.webp"
+                src="/brand/symbol-on-dark.svg"
                 alt=""
-                width={64}
+                width={56}
                 height={64}
-                className="h-16 w-16 rounded-full"
+                className="h-16 w-auto"
               />
               <p className="display text-4xl text-white">
                 Akarachi

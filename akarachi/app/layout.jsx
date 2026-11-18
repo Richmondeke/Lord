@@ -27,7 +27,6 @@ export const metadata = {
   description:
     "Hon. Engr. Akarachi Etinosa Amadi, Member of the House of Representatives for Mbaitoli/Ikeduru, Imo State. The man, the record and the work at home.",
   robots: { index: false, follow: false },
-  icons: { icon: "/img/logo.webp" },
 };
 
 export default function RootLayout({ children }) {

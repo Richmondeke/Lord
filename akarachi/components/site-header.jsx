@@ -77,11 +77,11 @@ export default function SiteHeader() {
             aria-label="Akarachi Amadi, home"
           >
             <Image
-              src="/img/logo.webp"
+              src="/brand/symbol-on-dark.svg"
               alt=""
-              width={46}
+              width={40}
               height={46}
-              className="h-[2.875rem] w-[2.875rem] rounded-full"
+              className="h-[2.875rem] w-auto"
               priority={true}
             />
             <span className="ui hidden text-[1.375rem] font-bold sm:block xl:hidden 2xl:block">

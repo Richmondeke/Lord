@@ -23,10 +23,13 @@ const ui = Sofia_Sans({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://aaklegacy.org"),
   title: "Akarachi Amadi | A man of the people",
   description:
     "Hon. Engr. Akarachi Etinosa Amadi, Member of the House of Representatives for Mbaitoli/Ikeduru, Imo State. The man, the record and the work at home.",
   robots: { index: false, follow: false },
+  openGraph: { type: "website", siteName: "AAK Legacy Foundation", url: "/" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }) {

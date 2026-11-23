@@ -60,13 +60,22 @@ export async function POST(req) {
     // People can add applications; only the office changes a stage, so new rows always start at 0.
     const { data: existing } = await sb
       .from("applications")
-      .select("ref")
+      .select("ref, programme")
       .eq("user_id", user.id);
     const have = new Set((existing ?? []).map((r) => r.ref));
+    // The rules allow one application per programme, so a programme already applied for is skipped.
+    const applied = new Set((existing ?? []).map((r) => r.programme));
     const fresh = (Array.isArray(value) ? value : [])
       .filter(
         (a) =>
-          refOk(a?.ref) && PROGRAMME_IDS.has(a.programme) && !have.has(a.ref),
+          refOk(a?.ref) &&
+          PROGRAMME_IDS.has(a.programme) &&
+          !have.has(a.ref) &&
+          !applied.has(a.programme),
+      )
+      .filter(
+        (a, i, list) =>
+          list.findIndex((b) => b.programme === a.programme) === i,
       )
       .slice(0, 10)
       .map((a) => ({

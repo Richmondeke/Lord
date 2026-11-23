@@ -196,7 +196,7 @@ export default function ApplyForm() {
   async function K() {
     if (!J) return M(true);
     if (p.step < 4) return Y(p.step + 1);
-    if (A) return;
+    if (A || store.apps(e.id).some((x) => x.programme === P.id)) return;
     F(true);
     let a = {
       ref: `MBK-2026-${Array.from(crypto.getRandomValues(new Uint8Array(6)), (n) => "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"[n % 32]).join("")}`,
@@ -233,9 +233,29 @@ export default function ApplyForm() {
       d.push(`/portal/dashboard?new=${a.ref}`));
   }
   let Q = (e, a) => (C && e ? a : undefined);
+  // The rules allow one application per programme.
+  let already = store.apps(e.id).find((x) => x.programme === P.id);
   return (
     <div className="wrap py-10 md:py-16">
       <div className="mx-auto max-w-[48rem]">
+        {already && (
+          <div
+            className="mb-8 border-l-4 border-forest bg-mint p-5"
+            role="status"
+          >
+            <p className="font-semibold">
+              You have already applied for {P.name} (reference {already.ref}).
+            </p>
+            <p className="mt-1">
+              Each programme takes one application per person. You can follow it
+              from your{" "}
+              <Link href="/portal/dashboard" className="link">
+                dashboard
+              </Link>
+              , or choose a different programme below.
+            </p>
+          </div>
+        )}
         <p className="ui text-xl text-slate">
           {P.name}
           {p.saved && (

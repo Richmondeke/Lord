@@ -51,19 +51,33 @@ export async function GET() {
   const { fail } = await guard();
   if (fail) return fail;
   const sb = db();
-  const [{ data: apps }, { data: people }, { data: states }, { data: news }] =
-    await Promise.all([
-      sb
-        .from("applications")
-        .select("*")
-        .order("created_at", { ascending: false }),
-      sb.from("profiles").select("*").order("created_at", { ascending: false }),
-      sb
-        .from("portal_state")
-        .select("user_id, mentor")
-        .not("mentor", "is", null),
-      sb.from("news").select("*").order("published_on", { ascending: false }),
-    ]);
+  const [
+    { data: apps },
+    { data: people },
+    { data: states },
+    { data: news },
+    { data: docs },
+  ] = await Promise.all([
+    sb
+      .from("applications")
+      .select("*")
+      .order("created_at", { ascending: false }),
+    sb.from("profiles").select("*").order("created_at", { ascending: false }),
+    sb.from("portal_state").select("user_id, mentor").not("mentor", "is", null),
+    sb.from("news").select("*").order("published_on", { ascending: false }),
+    sb
+      .from("documents")
+      .select("id, doc, file_name, size, application_ref")
+      .not("application_ref", "is", null),
+  ]);
+  const docsByRef = {};
+  for (const d of docs ?? [])
+    (docsByRef[d.application_ref] ??= []).push({
+      id: d.id,
+      doc: d.doc,
+      name: d.file_name,
+      size: d.size,
+    });
   const byId = Object.fromEntries((people ?? []).map((p) => [p.id, p]));
   return json({
     applications: (apps ?? []).map((a) => {
@@ -77,6 +91,7 @@ export async function GET() {
         scores: a.scores ?? {},
         score: a.score,
         note: a.review_note ?? "",
+        documents: docsByRef[a.ref] ?? [],
         created_at: a.created_at,
         name: p.name,
         phone: p.phone,

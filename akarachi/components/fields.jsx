@@ -14,7 +14,15 @@ let CD = FileCheckCornerIcon;
 let CM = TrashIcon;
 let CP = UploadIcon,
   u = ["application/pdf", "image/jpeg", "image/png"];
-function FileField({ label: e, optional: s, value: r, onChange: i }) {
+// With `upload`, the file is sent as soon as it is chosen; `upload` resolves to the saved value or { error }.
+function FileField({
+  label: e,
+  optional: s,
+  value: r,
+  onChange: i,
+  upload,
+  onRemove,
+}) {
   let n = useRef(null),
     [l, o] = useState(false),
     c = useId();
@@ -28,13 +36,19 @@ function FileField({ label: e, optional: s, value: r, onChange: i }) {
         return i({
           error: `${e.name} is ${(e.size / 1048576).toFixed(1)} MB. The limit is 5 MB. Compress it or photograph it again.`,
         });
-      i({
-        name: e.name,
-        size: e.size,
-      });
+      if (!upload)
+        return i({
+          name: e.name,
+          size: e.size,
+        });
+      i({ uploading: true, name: e.name });
+      upload(e).then(i, () =>
+        i({ error: "The upload failed. Check your connection and try again." }),
+      );
     }
   }
-  let x = r && "name" in r,
+  let busy = r && r.uploading,
+    x = r && "name" in r && !busy,
     f = r && "error" in r ? r.error : undefined;
   return (
     <div>
@@ -51,17 +65,32 @@ function FileField({ label: e, optional: s, value: r, onChange: i }) {
             {r.name}{" "}
             <span className="text-sm text-slate">
               {Math.max(1, Math.round(r.size / 1024))}
-              {" KB, accepted"}
+              {r.stored ? " KB, uploaded securely" : " KB, accepted"}
             </span>
           </p>
           <button
             type="button"
-            onClick={() => i(undefined)}
+            onClick={() => (onRemove ? onRemove(r) : null, i(undefined))}
             aria-label={`Remove ${r.name}`}
             className="grid h-11 w-11 place-items-center hover:bg-mint"
           >
             <CM size={18} aria-hidden={true} />
           </button>
+        </div>
+      ) : busy ? (
+        <div
+          className="flex items-center gap-3 border-[1.5px] border-dashed border-emerald bg-mint/60 p-4"
+          aria-live="polite"
+        >
+          <CP
+            className="shrink-0 animate-pulse text-emerald"
+            aria-hidden={true}
+          />
+          <p className="min-w-0 flex-1 truncate">
+            {"Uploading "}
+            {r.name}
+            {"…"}
+          </p>
         </div>
       ) : (
         <button

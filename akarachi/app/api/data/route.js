@@ -92,6 +92,14 @@ export async function POST(req) {
     if (fresh.length) {
       const { error } = await sb.from("applications").insert(fresh);
       if (error) return json({ error: "Could not save the application." }, 400);
+      // Attach the files uploaded for each programme to its new application.
+      for (const a of fresh)
+        await sb
+          .from("documents")
+          .update({ application_ref: a.ref })
+          .eq("user_id", user.id)
+          .eq("programme", a.programme)
+          .is("application_ref", null);
     }
     return json({ ok: true });
   }

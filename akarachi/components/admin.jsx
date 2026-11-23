@@ -18,6 +18,49 @@ let o = (e = "") => ({
   }),
   d = () => new Date().toISOString().slice(0, 10),
   h = ["Applications", "People", "Mentor requests", "News"];
+// The applicant's files. Each opens through a link that expires after a minute.
+function DocumentList({ app }) {
+  const [busy, setBusy] = useState(null);
+  const needed = (
+    programmes.find((p) => p.id === app.programme)?.documents ?? []
+  ).filter((d) => !d.optional);
+  const have = new Set((app.documents ?? []).map((d) => d.doc));
+  const missing = needed.filter((d) => !have.has(d.name));
+  async function open(d) {
+    setBusy(d.id);
+    const w = window.open("", "_blank");
+    try {
+      const r = await fetch(`/api/documents?id=${d.id}`);
+      const { url } = await r.json();
+      if (url && w) w.location.href = url;
+      else w?.close();
+    } catch {
+      w?.close();
+    }
+    setBusy(null);
+  }
+  return (
+    <div className="mt-2 text-sm">
+      {(app.documents ?? []).map((d) => (
+        <button
+          type="button"
+          key={d.id}
+          onClick={() => open(d)}
+          disabled={busy === d.id}
+          className="mr-3 block text-left underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
+        >
+          {busy === d.id ? "Opening…" : d.doc}
+        </button>
+      ))}
+      {missing.length > 0 && (
+        <span className="mt-1 block text-brick">
+          Missing: {missing.map((d) => d.name).join(", ")}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function Admin() {
   let { user: e, ready: l } = useAuth(),
     [n, m] = useState(null),
@@ -615,7 +658,10 @@ export default function Admin() {
                             programmes.find((e) => e.id === t)?.short ?? t)
                           }
                         </td>
-                        <td className={H}>{e.summary}</td>
+                        <td className={H}>
+                          {e.summary}
+                          <DocumentList app={e} />
+                        </td>
                         <td className={H}>
                           <button
                             type="button"

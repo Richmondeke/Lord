@@ -34,8 +34,49 @@ let b = [
     "Driver's licence",
     "International passport",
   ];
+// Sends one file straight to private storage through a one-time upload link, then has the server check it.
+async function uploadDocument(programme, doc, file) {
+  const post = (b) =>
+    fetch("/api/documents", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(b),
+    }).then(async (r) => ({
+      ok: r.ok,
+      data: await r.json().catch(() => ({})),
+    }));
+  const start = await post({
+    action: "start",
+    programme,
+    doc,
+    name: file.name,
+    type: file.type,
+    size: file.size,
+  });
+  if (!start.ok)
+    return { error: start.data.error || "Could not start the upload." };
+  const put = await fetch(start.data.url, {
+    method: "PUT",
+    headers: { "Content-Type": file.type },
+    body: file,
+  });
+  if (!put.ok)
+    return { error: "The upload failed. Check your connection and try again." };
+  const done = await post({
+    action: "finish",
+    path: start.data.path,
+    programme,
+    doc,
+    name: file.name,
+  });
+  if (!done.ok)
+    return { error: done.data.error || "The file could not be saved." };
+  const d = done.data.document;
+  return { name: d.name, size: d.size, id: d.id, stored: true };
+}
+
 export default function ApplyForm() {
-  let { user: e, ready: o } = useAuth(),
+  let { user: e, ready: o, backend: be } = useAuth(),
     d = useRouter(),
     m = useReducedMotion(),
     [p, j] = useState(emptyDraft),
@@ -93,6 +134,25 @@ export default function ApplyForm() {
     useEffect(() => {
       S && e && store.saveDraft(e.id, p);
     }, [p, S, e]),
+    // Files already uploaded for this programme come back after a reload.
+    useEffect(() => {
+      if (!o || !e || "supabase" !== be) return;
+      fetch("/api/documents")
+        .then((r) => (r.ok ? r.json() : { documents: [] }))
+        .then(({ documents: ds }) =>
+          w(
+            Object.fromEntries(
+              (ds ?? [])
+                .filter((d) => d.programme === p.programme && !d.ref)
+                .map((d) => [
+                  d.doc,
+                  { name: d.name, size: d.size, id: d.id, stored: true },
+                ]),
+            ),
+          ),
+        )
+        .catch(() => {});
+    }, [o, e, be, p.programme]),
     !o)
   )
     return <div className="wrap py-24" aria-busy="true" />;
@@ -176,7 +236,7 @@ export default function ApplyForm() {
       .map((e) => e.name)
       .every((e) => {
         let a = k[e];
-        return a && "name" in a;
+        return a && "name" in a && !a.uploading;
       }),
     J = [
       R && p.community.trim().length > 1,
@@ -741,15 +801,26 @@ export default function ApplyForm() {
             {3 === p.step && (
               <>
                 <p className="text-slate">
-                  Files are checked as you add them. If you leave before
-                  submitting, your answers stay but you will need to attach the
-                  files again.
+                  {"supabase" === be
+                    ? "Files upload as you add them and are stored privately. Only the programme team can open them."
+                    : "Files are checked as you add them. If you leave before submitting, your answers stay but you will need to attach the files again."}
                 </p>
                 {P.documents.map((e) => (
                   <FileField
                     label={e.name}
                     optional={e.optional}
                     value={k[e.name]}
+                    upload={
+                      "supabase" === be
+                        ? (f) => uploadDocument(P.id, e.name, f)
+                        : undefined
+                    }
+                    onRemove={(a) =>
+                      a?.id &&
+                      fetch(`/api/documents?id=${a.id}`, {
+                        method: "DELETE",
+                      }).catch(() => {})
+                    }
                     onChange={(a) =>
                       w((t) => ({
                         ...t,

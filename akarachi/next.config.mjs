@@ -6,7 +6,7 @@ const csp = [
   "img-src 'self' data: blob: https://i.ytimg.com",
   "media-src 'self'",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://opvetifupfqsdcwrkoto.supabase.co",
   "frame-src https://www.youtube-nocookie.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",

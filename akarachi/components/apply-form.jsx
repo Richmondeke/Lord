@@ -199,7 +199,7 @@ export default function ApplyForm() {
     if (A) return;
     F(true);
     let a = {
-      ref: `MBK-2026-${String(Math.floor(1e3 + 9e3 * Math.random()))}`,
+      ref: `MBK-2026-${Array.from(crypto.getRandomValues(new Uint8Array(6)), (n) => "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"[n % 32]).join("")}`,
       programme: P.id,
       submitted: today(),
       stage: 0,
@@ -583,7 +583,7 @@ export default function ApplyForm() {
                   </Field>
                   <Field
                     label="ID number"
-                    hint="Checked here for format only. This prototype does not keep it."
+                    hint="Checked for format only. We do not store your ID number."
                     error={Q(
                       !G,
                       "NIN slip" === p.idType

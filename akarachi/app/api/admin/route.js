@@ -4,6 +4,7 @@ import {
   currentUser,
   db,
   json,
+  sameOrigin,
   today,
 } from "@/lib/server";
 import { scoreCriteria } from "@/lib/content";
@@ -97,6 +98,8 @@ export async function GET() {
 }
 
 export async function POST(req) {
+  if (!sameOrigin(req))
+    return json({ ok: false, error: "Request refused." }, 403);
   const { fail } = await guard();
   if (fail) return fail;
   const body = await req.json().catch(() => ({}));
@@ -145,6 +148,11 @@ export async function POST(req) {
     );
     if (!post.title?.trim())
       return json({ ok: false, error: "Give the post a title." }, 400);
+    if (post.url && !/^https:\/\/\S+$/i.test(post.url))
+      return json(
+        { ok: false, error: "The link must start with https://" },
+        400,
+      );
     post.updated_at = new Date().toISOString();
     const q = body.id
       ? sb.from("news").update(post).eq("id", body.id)

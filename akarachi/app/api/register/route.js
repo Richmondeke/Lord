@@ -1,4 +1,4 @@
-import { connected, db, json } from "@/lib/server";
+import { allow, clientIp, connected, db, json, tooMany } from "@/lib/server";
 
 const PROGRAMME = {
   jamb: "Free JAMB registration",
@@ -23,6 +23,8 @@ export async function POST(req) {
       400,
     );
   if (!connected) return json({ matches: [] });
+  if (!(await allow(`register:${clientIp(req)}`, 30, 600)))
+    return tooMany("Too many searches. Wait a few minutes and try again.");
 
   // Every word must appear in the name, in any order. Only limited fields leave the server.
   let q = db()

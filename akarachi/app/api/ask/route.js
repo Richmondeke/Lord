@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { CONTEXT, NO_ANSWER, matchAnswer } from "@/lib/kb";
-import { json } from "@/lib/server";
+import { allow, clientIp, json } from "@/lib/server";
 
 const SYSTEM = `You answer questions on the website of Hon. Engr. Akarachi Etinosa Amadi, Member of the House of Representatives for Mbaitoli/Ikeduru, Imo State, and his constituency Empowerment Portal.
 
@@ -20,7 +20,10 @@ export async function POST(req) {
   const fallback = matchAnswer(q);
 
   if (!process.env.ANTHROPIC_API_KEY)
-    return json({ ...fallback, source: "kb" });
+    if (!(await allow(`ask:${clientIp(req)}`, 20, 600)))
+      // AI answers cost money; past the limit, fall back to the keyword answers.
+      return json({ ...fallback, source: "kb" });
+  return json({ ...fallback, source: "kb" });
 
   try {
     const client = new Anthropic();

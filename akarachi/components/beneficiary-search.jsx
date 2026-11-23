@@ -210,8 +210,8 @@ export default function BeneficiarySearch() {
                   </div>
                 </dl>
                 <p className="mt-3 border-t border-line pt-3 text-sm text-slate">
-                  Not you, or a detail is wrong? Write to info@aaklegacy.org with
-                  your name and community.
+                  Not you, or a detail is wrong? Write to info@aaklegacy.org
+                  with your name and community.
                 </p>
               </motion.div>
             ))}

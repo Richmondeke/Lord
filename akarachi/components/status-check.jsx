@@ -18,7 +18,7 @@ export default function StatusCheck() {
           className="text-[clamp(3.25rem,7vw,6rem)]"
         />
         <p className="mt-5 text-lg">
-          Enter your reference number, or the phone number you registered with.
+          Enter the reference number from your dashboard or confirmation text.
         </p>
         <form
           className="mt-8 flex flex-wrap gap-3"
@@ -34,12 +34,12 @@ export default function StatusCheck() {
           }}
         >
           <label htmlFor="ref" className="sr-only">
-            Reference number or phone
+            Reference number
           </label>
           <input
             id="ref"
             className="field min-w-0 flex-1 !min-h-14 text-lg"
-            placeholder="MBK-2026-0000 or 0803 123 4567"
+            placeholder="MBK-2026-7K4Q9X"
             value={e}
             onChange={(e) => c(e.target.value)}
           />

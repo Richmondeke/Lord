@@ -68,11 +68,6 @@ export default function Layout({ children }) {
                   Empowerment Portal
                 </Link>
               </li>
-              <li>
-                <Link href="/system" className="hover:underline">
-                  Design system
-                </Link>
-              </li>
             </ul>
           </div>
           <div>
@@ -133,8 +128,8 @@ export default function Layout({ children }) {
         </div>
         <div className="border-t border-white/15">
           <p className="wrap py-5 text-sm text-white/60">
-            Design prototype, not yet the official site. Figures cite
-            akarachi.org, press reports and office registers.
+            © AAK Legacy Foundation. Figures cite akarachi.org, press reports
+            and office registers.
           </p>
         </div>
       </footer>

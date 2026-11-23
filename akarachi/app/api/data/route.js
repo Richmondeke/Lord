@@ -1,5 +1,16 @@
-import { connected, currentUser, db, json } from "@/lib/server";
+import {
+  connected,
+  currentUser,
+  db,
+  json,
+  refOk,
+  sameOrigin,
+} from "@/lib/server";
+import { programmes } from "@/lib/content";
 
+const PROGRAMME_IDS = new Set(programmes.map((p) => p.id));
+const MAX_BYTES = 20_000;
+const clip = (v, n) => (v == null ? null : String(v).slice(0, n));
 const toApp = (r) => ({
   ref: r.ref,
   programme: r.programme,
@@ -33,9 +44,16 @@ export async function GET() {
 
 export async function POST(req) {
   if (!connected) return json({ error: "not_connected" }, 503);
+  if (!sameOrigin(req)) return json({ error: "Request refused." }, 403);
   const user = await currentUser();
   if (!user) return json({ error: "signed_out" }, 401);
-  const { kind, value } = await req.json().catch(() => ({}));
+  const raw = await req.text();
+  if (raw.length > MAX_BYTES) return json({ error: "Too large." }, 413);
+  let parsed = {};
+  try {
+    parsed = JSON.parse(raw);
+  } catch {}
+  const { kind, value } = parsed;
   const sb = db();
 
   if (kind === "apps") {
@@ -46,19 +64,25 @@ export async function POST(req) {
       .eq("user_id", user.id);
     const have = new Set((existing ?? []).map((r) => r.ref));
     const fresh = (Array.isArray(value) ? value : [])
-      .filter((a) => a?.ref && !have.has(a.ref))
+      .filter(
+        (a) =>
+          refOk(a?.ref) && PROGRAMME_IDS.has(a.programme) && !have.has(a.ref),
+      )
+      .slice(0, 10)
       .map((a) => ({
         user_id: user.id,
-        ref: String(a.ref),
-        programme: String(a.programme),
-        submitted: a.submitted ?? null,
-        summary: a.summary ?? null,
-        sms: a.sms ?? null,
+        ref: a.ref,
+        programme: a.programme,
         stage: 0,
+        submitted: clip(a.submitted, 40),
+        summary: clip(a.summary, 300),
+        sms: a.sms
+          ? { sent: Boolean(a.sms.sent), text: clip(a.sms.text, 320) }
+          : null,
       }));
     if (fresh.length) {
       const { error } = await sb.from("applications").insert(fresh);
-      if (error) return json({ error: error.message }, 400);
+      if (error) return json({ error: "Could not save the application." }, 400);
     }
     return json({ ok: true });
   }
@@ -70,12 +94,18 @@ export async function POST(req) {
     checkins: "checkins",
   }[kind];
   if (!column) return json({ error: "Unknown kind." }, 400);
-  const fallback = { learned: [], checkins: [] }[kind] ?? null;
+  let v = value ?? { learned: [], checkins: [] }[kind] ?? null;
+  if (kind === "learned")
+    v = (Array.isArray(v) ? v : [])
+      .map(Number)
+      .filter(Number.isInteger)
+      .slice(0, 100);
+  if (kind === "checkins" && !Array.isArray(v)) v = [];
   const { error } = await sb.from("portal_state").upsert({
     user_id: user.id,
-    [column]: value ?? fallback,
+    [column]: v,
     updated_at: new Date().toISOString(),
   });
-  if (error) return json({ error: error.message }, 400);
+  if (error) return json({ error: "Could not save." }, 400);
   return json({ ok: true });
 }

@@ -29,7 +29,10 @@ export default function Layout({ children }) {
                 Constituency. Constituency office: KM 4, Owerri-Okigwe Road, Imo
                 State.
               </p>
-              <a href="mailto:info@aaklegacy.org" className="go mt-4 text-white">
+              <a
+                href="mailto:info@aaklegacy.org"
+                className="go mt-4 text-white"
+              >
                 <span className="go-under">info@aaklegacy.org</span>
               </a>
               <p className="mt-6 max-w-sm text-[0.9375rem]">
@@ -141,8 +144,8 @@ export default function Layout({ children }) {
           </div>
           <div className="border-t border-white/15">
             <p className="wrap py-5 text-sm text-white/60">
-              Design prototype, not yet the official site. Figures cite
-              akarachi.org, press reports and office registers.
+              © AAK Legacy Foundation. Figures cite akarachi.org, press reports
+              and office registers.
             </p>
           </div>
         </footer>
